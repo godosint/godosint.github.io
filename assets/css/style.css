@@ -28,6 +28,12 @@ html {
 
 body {
     background-color: var(--bg-color);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("../img/bg.gif");
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
     animation-duration: 1s;
