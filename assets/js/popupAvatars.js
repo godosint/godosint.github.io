@@ -13,12 +13,12 @@ async function fetchAvatarsForAll() {
       if (userId) {
         try {
           let response = await fetch(
-            `https://api.wxrn.lol/api/avatar/${userId}`
+            `https://api.wxrn.lol/api/discord/${userId}`
           );
 
           if (!response.ok) {
             response = await fetch(
-              `${corsProxy}https://api.wxrn.lol/api/avatar/${userId}`
+              `${corsProxy}https://api.wxrn.lol/api/discord/${userId}`
             );
           }
 
