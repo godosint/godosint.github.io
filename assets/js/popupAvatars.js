@@ -1,6 +1,5 @@
 async function fetchAvatarsForAll() {
   const liElements = document.querySelectorAll("#popup li");
-  const corsProxy = "https://cors-anywhere.herokuapp.com/";
 
   for (let li of liElements) {
     const imgElement = li.querySelector("img");
@@ -8,30 +7,21 @@ async function fetchAvatarsForAll() {
     if (imgElement) {
       const userId = imgElement.alt;
 
-      imgElement.src = "assets/img/black.png";
-
       if (userId) {
         try {
-          let response = await fetch(
+          const response = await fetch(
             `https://api.wxrn.lol/api/discord/${userId}`
           );
-
-          if (!response.ok) {
-            response = await fetch(
-              `${corsProxy}https://api.wxrn.lol/api/discord/${userId}`
-            );
-          }
-
           const data = await response.json();
 
           if (data.avatarUrl) {
+            // Update the image src with the fetched avatar URL
             imgElement.src = data.avatarUrl;
           } else if (data.error) {
             console.error(`Error for user ${userId}: ${data.error}`);
           }
         } catch (error) {
-          console.error(`Failed to fetch avatar for user ${userId}:`, error);
-          continue;
+          console.error(`Error fetching avatar for user ${userId}:`, error);
         }
       } else {
         console.error("No Discord User ID found in the alt attribute.");
