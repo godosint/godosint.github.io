@@ -18,6 +18,20 @@ const tracks = [
     path: "assets/music/FoeThaLoveOfMoney.mp3",
   },
   { title: "Yeat - Cali", path: "assets/music/Cali.mp3" },
+  { title: "OsamaSon - Baghdad", path: "assets/music/Baghdad.mp3" },
+  { title: "OsamaSon - Frontin", path: "assets/music/Frontin.mp3" },
+  {
+    title: "OsamaSon - ik what you did last summer",
+    path: "assets/music/ikwydls.mp3",
+  },
+  { title: "OsamaSon - X & Sex", path: "assets/music/X&Sex.mp3" },
+  { title: "OsamaSon - Troops", path: "assets/music/Troops.mp3" },
+  { title: "Yeat - GO2WORK", path: "assets/music/GO2WORK.mp3" },
+  { title: "Yuke - my bad", path: "assets/music/mybad.mp3" },
+  { title: "Yuke - RRegret", path: "assets/music/RRegret.mp3" },
+  { title: "Ken Carson - Succubus", path: "assets/music/Succubus.mp3" },
+  { title: "Ken Carson - loading", path: "assets/music/Loading.mp3" },
+  { title: "Destroy Lonely - THRILL", path: "assets/music/THRILL.mp3" },
 ];
 
 let currentTrack = 0;
