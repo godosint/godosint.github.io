@@ -16,7 +16,7 @@ const lyricsCloseBtn = document.getElementById("lyrics-close");
 const lyricsButton = document.getElementById("lyrics-button");
 
 const API_URL = "https://api.wxrn.lol/api/lyrics";
-const defaultFooterText = "〤 @4kpx 〤";
+const defaultFooterText = "〤 praising shiku 〤";
 
 const tracks = [
   {
