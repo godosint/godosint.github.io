@@ -3,30 +3,32 @@ const colorThief = new ColorThief();
 async function fetchAvatarsForAll() {
   const liElements = document.querySelectorAll("#popup li");
 
-  const discordId = "1138972279506747462";
-  const avatarElement = document.querySelector("#dc-pfp");
-  const faviconElement = document.querySelector("#short-icon");
+  // const discordId = "1138972279506747462";
+  // const avatarElement = document.querySelector("#dc-pfp");
+  // const faviconElement = document.querySelector("#short-icon");
 
-  if (avatarElement) {
-    avatarElement.src = "assets/img/black.png";
-    const resData = await fetchImages(avatarElement, discordId);
+  // if (avatarElement) {
+  //   avatarElement.src = "assets/img/black.png";
+  //   const resData = await fetchImages(avatarElement, discordId);
 
-    if (resData && resData.bannerUrl) {
-      document.body.style.backgroundImage = `url(${
-        resData.bannerUrl + "?size=1024"
-      })`;
-      document.body.style.backgroundSize = "cover";
-      document.body.style.backgroundPosition = "center";
-    }
+  //   if (resData && resData.bannerUrl) {
+  //     document.body.style.backgroundImage = `url(${
+  //       resData.bannerUrl + "?size=1024"
+  //     })`;
+  //     document.body.style.backgroundSize = "cover";
+  //     document.body.style.backgroundPosition = "center";
+  //   }
 
-    if (resData && resData.avatarUrl && faviconElement) {
-      faviconElement.href = resData.avatarUrl;
-    } else if (!faviconElement) {
-      console.error('No element with id="short-icon" found.');
-    }
-  } else {
-    console.error('No element with id="dc-pfp" found.');
-  }
+  //   if (resData && resData.avatarUrl && faviconElement) {
+  //     faviconElement.href = resData.avatarUrl;
+  //   } else if (!faviconElement) {
+  //     console.error('No element with id="short-icon" found.');
+  //   }
+  // } else {
+  //   console.error('No element with id="dc-pfp" found.');
+  // }
+  document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundPosition = "center";
 
   for (let li of liElements) {
     const imgElement = li.querySelector("img");
