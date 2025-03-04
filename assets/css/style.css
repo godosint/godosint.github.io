@@ -33,12 +33,11 @@ html {
 body {
   /*   cursor: url('https://img.icons8.com/?size=16&id=71212&format=png'), auto; */
   background-color: var(--bg-color);
-  background-image: url("../img//bg.gif");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+  background-image: url("../img/bg.gif");
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
   animation-duration: 1s;
