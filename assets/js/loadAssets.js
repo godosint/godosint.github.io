@@ -1,53 +1,28 @@
 const colorThief = new ColorThief();
-const discordId = "1138972279506747462";
-
-const useDiscordSync = false;
-const defaultName = "shiku / salty";
-const defaultProfile = "assets/img/pfp.png";
-const defaultBanner = "assets/img/bg.gif";
-
-async function syncDisplayName() {
-  const nameElement = document.querySelector("#who");
-
-  if (!useDiscordSync) {
-    nameElement.innerHTML = defaultName;
-    return;
-  }
-
-  let response = await fetch(`https://api.wxrn.lol/api/discord/${discordId}`);
-  const data = await response.json();
-
-  if (data.displayName) {
-    nameElement.innerHTML = data.displayName;
-  }
-}
 
 async function fetchAvatarsForAll() {
   const liElements = document.querySelectorAll("#popup li");
+
+  const discordId = "1138972279506747462";
   const avatarElement = document.querySelector("#dc-pfp");
   const faviconElement = document.querySelector("#short-icon");
 
   if (avatarElement) {
-    if (useDiscordSync) {
-      const resData = await fetchImages(avatarElement, discordId);
+    avatarElement.src = "assets/img/black.png";
+    const resData = await fetchImages(avatarElement, discordId);
 
-      if (resData && resData.bannerUrl) {
-        document.body.style.backgroundImage = `url(${
-          resData.bannerUrl + "?size=2048"
-        })`;
-        document.body.style.backgroundSize = "cover";
-        document.body.style.backgroundPosition = "center";
-      }
+    if (resData && resData.bannerUrl) {
+      document.body.style.backgroundImage = `url(${
+        resData.bannerUrl + "?size=1024"
+      })`;
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+    }
 
-      if (resData && resData.avatarUrl && faviconElement) {
-        faviconElement.href = resData.avatarUrl;
-      } else if (!faviconElement) {
-        console.error('No element with id="short-icon" found.');
-      }
-    } else {
-      avatarElement.src = defaultProfile;
-      document.body.style.backgroundImage = `url("${defaultBanner}")`;
-      applyColorsFromImage(avatarElement);
+    if (resData && resData.avatarUrl && faviconElement) {
+      faviconElement.href = resData.avatarUrl;
+    } else if (!faviconElement) {
+      console.error('No element with id="short-icon" found.');
     }
   } else {
     console.error('No element with id="dc-pfp" found.');
@@ -58,11 +33,12 @@ async function fetchAvatarsForAll() {
 
     if (imgElement) {
       const userId = imgElement.alt;
+      imgElement.src = "assets/img/black.png";
 
       if (userId) {
         await fetchImages(imgElement, userId);
       } else {
-        imgElement.src = "assets/img/black.png";
+        console.error("No Discord User ID found in the alt attribute.");
       }
     }
   }
@@ -71,14 +47,21 @@ async function fetchAvatarsForAll() {
 async function fetchImages(imgElement, userId) {
   try {
     let response = await fetch(`https://api.wxrn.lol/api/discord/${userId}`);
+
+    if (!response.ok) {
+      response = await fetch(
+        `https://cors-anywhere.herokuapp.com/https://api.wxrn.lol/api/discord/${userId}`
+      );
+    }
+
     const data = await response.json();
 
     if (data.avatarUrl) {
-      const base64Url = await fetchImageAsBase64(data.avatarUrl);
-      imgElement.src = base64Url;
+      imgElement.src = data.avatarUrl;
 
       const avatarPromise = new Promise((resolve, reject) => {
         imgElement.onload = () => {
+          applyColorsFromImage(imgElement);
           resolve(data);
         };
 
@@ -100,17 +83,6 @@ async function fetchImages(imgElement, userId) {
   }
 
   return null;
-}
-
-async function fetchImageAsBase64(url) {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
 }
 
 function applyColorsFromImage(imgElement) {
@@ -159,38 +131,24 @@ function applyColorsFromImage(imgElement) {
 
     document.body.style.backgroundColor = darkenedBackgroundColor;
 
-    const cursorFilter = rgbToFilter(lighterTextColor);
-
-    console.log("Colors and cursors applied based on the image:", {
+    console.log("Colors applied based on the image:", {
       dominantColor: dominantColorRgb,
       textColor: textColor,
       lighterTextColor: lighterTextColor,
       iconColor: iconColor,
       darkenedBackgroundColor: darkenedBackgroundColor,
-      cursorFilter: cursorFilter,
     });
   } catch (error) {
     console.error("Error extracting colors from the image:", error);
   }
 }
 
-function rgbToFilter(rgbColor) {
-  const [r, g, b] = rgbColor.match(/\d+/g).map(Number);
-  const normalizedColor = [r / 255, g / 255, b / 255];
-
-  return `invert(100%) sepia(100%) saturate(10000%) hue-rotate(${Math.atan2(
-    normalizedColor[1] - normalizedColor[0],
-    normalizedColor[2] - normalizedColor[0]
-  )}deg)`;
-}
-
-function adjustColorBrightness(rgbColor, amount) {
-  const rgb = rgbColor.match(/\d+/g).map(Number);
-  const r = Math.min(Math.max(rgb[0] + amount, 0), 255);
-  const g = Math.min(Math.max(rgb[1] + amount, 0), 255);
-  const b = Math.min(Math.max(rgb[2] + amount, 0), 255);
-  return `rgb(${r}, ${g}, ${b})`;
+function adjustColorBrightness(color, percent) {
+  const rgb = color.match(/\d+/g).map(Number);
+  const adjust = (value, percent) =>
+    Math.min(255, Math.max(0, value + Math.floor(value * (percent / 100))));
+  const adjustedColor = rgb.map((value) => adjust(value, percent));
+  return `rgb(${adjustedColor[0]}, ${adjustedColor[1]}, ${adjustedColor[2]})`;
 }
 
 fetchAvatarsForAll();
-syncDisplayName();
