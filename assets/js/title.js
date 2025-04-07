@@ -1,7 +1,7 @@
 async function fetchUsername() {
   try {
     let userId = "1138972279506747462";
-    const response = await fetch(`https://api.wxrn.lol/api/discord/${userId}`);
+    const response = await fetch(`https://api.wxrn.lol/discord/${userId}`);
     const data = await response.json();
 
     const username = `@${data.username}` || "@user";
